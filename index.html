@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Placard theme documentation</title>
+  <meta name="description" content="How to set up and customize Placard, an editorial Shopify theme for home, furniture and design stores.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231c1a17'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%23f3efe7'%3EP%3C/text%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #f3efe7;
+      --surface: #ebe5da;
+      --text: #1c1a17;
+      --muted: #5f5a52;
+      --border: #d6cfc2;
+      --accent: #a34d31;
+      --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+      --sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #161513;
+        --surface: #22201c;
+        --text: #f0ebe2;
+        --muted: #a9a297;
+        --border: #3a3630;
+        --accent: #e08a6a;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.65 var(--sans); -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+    a:hover { color: var(--accent); }
+    :focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+    .skip { position: absolute; left: 16px; top: -48px; padding: 8px 16px; background: var(--text); color: var(--bg); }
+    .skip:focus { top: 12px; }
+
+    .topbar { position: sticky; top: 0; z-index: 2; background: var(--bg); border-bottom: 1px solid var(--border); }
+    .topbar__inner { max-width: 1200px; margin: 0 auto; padding: 0 16px; height: 64px; display: flex; align-items: center; gap: 16px; }
+    .wordmark { font: 26px/1 var(--serif); text-decoration: none; letter-spacing: -0.01em; }
+    .label { font: 11px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    .topbar__end { margin-left: auto; display: flex; gap: 20px; align-items: center; font-size: 14px; }
+
+    .layout { max-width: 1200px; margin: 0 auto; padding: 0 16px; display: grid; gap: 48px; }
+    @media (min-width: 960px) { .layout { grid-template-columns: 240px minmax(0, 1fr); } }
+
+    .nav { padding-top: 40px; }
+    @media (min-width: 960px) { .nav { position: sticky; top: 64px; align-self: start; max-height: calc(100vh - 64px); overflow-y: auto; padding-bottom: 40px; } }
+    .nav details { border: 1px solid var(--border); padding: 12px 16px; }
+    @media (min-width: 960px) { .nav details { border: 0; padding: 0; } .nav summary { pointer-events: none; list-style: none; } .nav summary::-webkit-details-marker { display: none; } }
+    .nav summary { cursor: pointer; }
+    .nav ol { list-style: none; margin: 12px 0 0; padding: 0; counter-reset: s; }
+    .nav li { counter-increment: s; }
+    .nav a { display: flex; gap: 10px; padding: 6px 0; text-decoration: none; color: var(--muted); font-size: 14px; }
+    .nav a::before { content: counter(s, decimal-leading-zero); font: 11px/2 var(--mono); }
+    .nav a:hover, .nav a[aria-current='true'] { color: var(--text); }
+    .nav a[aria-current='true']::before { color: var(--accent); }
+
+    main { padding: 40px 0 96px; max-width: 760px; }
+    h1 { font: 400 clamp(44px, 7vw, 80px)/1 var(--serif); letter-spacing: -0.02em; margin: 16px 0 24px; }
+    h2 { font: 400 clamp(30px, 4vw, 40px)/1.1 var(--serif); letter-spacing: -0.01em; margin: 72px 0 16px; padding-top: 24px; border-top: 1px solid var(--text); }
+    h3 { font: 400 22px/1.25 var(--serif); margin: 36px 0 8px; }
+    p, ul, ol { margin: 0 0 16px; }
+    main ul, main ol { padding-left: 22px; }
+    li + li { margin-top: 6px; }
+    .lead { font-size: 19px; color: var(--muted); max-width: 640px; }
+    code { font: 0.88em var(--mono); background: var(--surface); padding: 0.1em 0.4em; border-radius: 4px; }
+    .table { overflow-x: auto; margin: 16px 0 24px; }
+    table { width: 100%; border-collapse: collapse; font-size: 15px; }
+    th, td { text-align: left; vertical-align: top; padding: 12px 16px 12px 0; border-bottom: 1px solid var(--border); }
+    th { font-weight: 600; border-bottom-color: var(--text); }
+    td:first-child { width: 34%; min-width: 120px; padding-right: 24px; }
+
+    .footer { border-top: 1px solid var(--border); }
+    .footer__inner { max-width: 1200px; margin: 0 auto; padding: 32px 16px; display: flex; flex-wrap: wrap; gap: 12px 32px; color: var(--muted); font-size: 14px; }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#content">Skip to content</a>
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="wordmark" href="#top">Placard</a>
+      <span class="label">Documentation</span>
+      <div class="topbar__end">
+        <span class="label">v0.16.2</span>
+        <a href="mailto:yazeedmhajarat@gmail.com">Support</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout" id="top">
+    <nav class="nav" aria-label="Contents">
+      <details open>
+        <summary class="label">Contents</summary>
+        <ol>
+        <li><a href="#getting-started">Getting started</a></li>
+        <li><a href="#theme-settings">Theme settings</a></li>
+        <li><a href="#header">Header, menus and announcement bar</a></li>
+        <li><a href="#sections">Sections for your home page and other pages</a></li>
+        <li><a href="#product">Product pages</a></li>
+        <li><a href="#collection">Collection pages and filters</a></li>
+        <li><a href="#cart">Cart</a></li>
+        <li><a href="#search">Search</a></li>
+        <li><a href="#blog">Blog</a></li>
+        <li><a href="#pages">Pages and page templates</a></li>
+        <li><a href="#footer">Footer</a></li>
+        <li><a href="#seo">SEO</a></li>
+        <li><a href="#languages">Languages and currencies</a></li>
+        <li><a href="#faq">Questions and troubleshooting</a></li>
+        <li><a href="#support">Support</a></li>
+        </ol>
+      </details>
+    </nav>
+
+    <main id="content" tabindex="-1">
+      <p class="label">Shopify theme</p>
+      <h1>Placard documentation</h1>
+      <div class="lead"><p>Everything you need to set up and run your store with Placard. Every setting mentioned here is in the theme editor: <strong>Online Store → Themes → Customize</strong>. Need help? Email <a href="mailto:yazeedmhajarat@gmail.com">yazeedmhajarat@gmail.com</a>.</p></div>
+
+<h2 id="getting-started">1. Getting started</h2>
+<ol>
+  <li>Add Placard to your store from the Shopify Theme Store, then click <strong>Customize</strong>.</li>
+  <li>Choose a style. Placard comes with four presets: <strong>Placard</strong> (warm and editorial), <strong>Gallery</strong>, <strong>Nocturne</strong> (dark) and <strong>Verdigris</strong>. You can change colors and fonts later in Theme settings.</li>
+  <li>Upload your logo: <strong>Theme settings → Logo and favicon</strong>.</li>
+  <li>Create your menus in <strong>Content → Menus</strong> (or <strong>Online Store → Navigation</strong>), then pick them in the Header and Footer.</li>
+  <li>Set up filters for your collections with the free Search &amp; Discovery app (see <a href="#collection">Collection pages</a>).</li>
+  <li>Work through the home page sections from top to bottom. Click a section to edit it, drag to reorder, or use <strong>Add section</strong>.</li>
+  <li>Preview on mobile with the phone icon at the top of the editor, then click <strong>Publish</strong>.</li>
+</ol>
+<p>Tip: settings only appear when they apply. For example, the options for the shrinking header only show when the sticky header is on.</p>
+
+<h2 id="theme-settings">2. Theme settings</h2>
+<p>Open the gear icon in the editor's left sidebar.</p>
+<div class="table"><table>
+  <thead><tr><th>Group</th><th>What you can change</th></tr></thead>
+  <tbody>
+    <tr><td>Logo and favicon</td><td>Logo, an inverse logo for transparent headers, logo width on desktop and mobile, favicon</td></tr>
+    <tr><td>Colors</td><td>Color schemes (background, text, buttons, borders) that every section can use, plus sale and sold out badge colors</td></tr>
+    <tr><td>Typography</td><td>Heading and body fonts, size scale, heading case and letter spacing, label style</td></tr>
+    <tr><td>Layout</td><td>Page width, page margins, space between sections, grid spacing</td></tr>
+    <tr><td>Shapes and motion</td><td>Corner radius for buttons, inputs and images; reveal sections on scroll; smooth page transitions; hover effects</td></tr>
+    <tr><td>Product cards</td><td>Image ratio, index numbers, vendor, product type, second image on hover, image slider, color swatches, quick add, sale badge, "New" badge, custom badges</td></tr>
+    <tr><td>Cart</td><td>Cart type (drawer, popup or page), order note, discount codes, express checkout, terms checkbox, reserved timer, free shipping and free gift goals, complementary products, gift wrap and gift message</td></tr>
+    <tr><td>Search</td><td>Search suggestions with or without vendor and price</td></tr>
+    <tr><td>Currency format</td><td>Show currency codes (USD, EUR) next to prices</td></tr>
+    <tr><td>Social media</td><td>Links for Instagram, Pinterest, Facebook, TikTok, YouTube and X, used in the header, footer and contact page</td></tr>
+    <tr><td>Utilities</td><td>Back to top button with reading progress</td></tr>
+  </tbody>
+</table></div>
+<p><strong>Custom badges:</strong> add a product tag such as <code>badge:Limited edition</code> and the card shows a "Limited edition" badge. The prefix can be changed in Product cards.</p>
+
+<h2 id="header">3. Header, menus and announcement bar</h2>
+<h3>Header</h3>
+<ul>
+  <li><strong>Desktop layout:</strong> logo left with menu centered, logo left with menu beside it, logo centered, logo centered with the menu below, or a menu button only.</li>
+  <li><strong>Mega menu:</strong> click <strong>Add block → Mega menu</strong> and type the top-level menu item it belongs to. Choose the style and number of link columns, show collection images, and add a featured product or up to two promotion images. Other menu items with sub-menus show as dropdowns.</li>
+  <li><strong>Highlighted menu item:</strong> type the name of a menu item (for example "Sale") to show it in your accent color.</li>
+  <li><strong>Sticky header:</strong> always, only when scrolling up, or off. It can shrink and show a shadow while scrolling.</li>
+  <li><strong>Transparent on home page:</strong> the header sits over your first slideshow or hero image. Choose light or dark text, and upload an inverse logo in Theme settings.</li>
+  <li><strong>Search:</strong> a search icon that opens a full search window with popular searches and suggested products, or a search bar in the header. On mobile you can add a search bar below the header.</li>
+  <li><strong>Account sign-in:</strong> shows Shopify's sign-in and account menu. Requires customer accounts: <strong>Settings → Customer accounts</strong>.</li>
+  <li><strong>Country and language selectors</strong> appear when you sell in more than one market or language.</li>
+  <li><strong>Mobile menu:</strong> choose the drawer style, size and link size, show social icons and the language selector, and add a promotion image at the bottom.</li>
+</ul>
+<h3>Announcement bar</h3>
+<p>Add one block per message. Choose rotating messages or a continuous scrolling marquee, with speed control. On large screens it can also show a small menu (for example Help, Stores), social icons and the country selector.</p>
+
+<h2 id="sections">4. Sections for your home page and other pages</h2>
+<p>Click <strong>Add section</strong> on any page. Every section has its own color scheme and spacing.</p>
+<div class="table"><table>
+  <thead><tr><th>Section</th><th>Use it for</th></tr></thead>
+  <tbody>
+    <tr><td>Slideshow</td><td>Full-width slides with images or video, slow zoom, autoplay, text position per slide</td></tr>
+    <tr><td>Hero</td><td>One large image or background video with a heading and buttons</td></tr>
+    <tr><td>Collection index</td><td>A numbered list of collections that shows each collection's image on hover</td></tr>
+    <tr><td>Featured collection</td><td>Products from one collection as a grid or carousel, with an optional intro tile</td></tr>
+    <tr><td>Collection tabs</td><td>Several collections in tabs (for example New, Bestsellers, Sale)</td></tr>
+    <tr><td>Featured product</td><td>One product with its gallery and buy buttons on any page</td></tr>
+    <tr><td>Shop the look</td><td>An image with clickable product hotspots</td></tr>
+    <tr><td>Bento grid</td><td>A mosaic of image, video, product, collection and text tiles</td></tr>
+    <tr><td>Product finder</td><td>A short quiz that recommends products. Each answer matches a product tag</td></tr>
+    <tr><td>Shoppable videos</td><td>Vertical videos that play when visible, each linked to a product</td></tr>
+    <tr><td>Shoppable gallery</td><td>Customer or social photos with tagged products</td></tr>
+    <tr><td>Horizontal gallery</td><td>A row of images that scrolls sideways as visitors scroll down</td></tr>
+    <tr><td>Scroll story</td><td>Steps of text beside an image that changes as visitors scroll</td></tr>
+    <tr><td>Stacking cards</td><td>Cards that stack on top of each other while scrolling</td></tr>
+    <tr><td>Scroll text reveal</td><td>A large statement that lights up word by word</td></tr>
+    <tr><td>Before and after</td><td>Two images with a slider to compare them</td></tr>
+    <tr><td>Parallax banner</td><td>A full-width image that moves slower than the page</td></tr>
+    <tr><td>Image with text</td><td>An image or video beside text and buttons</td></tr>
+    <tr><td>Custom section</td><td>Build your own layout from heading, text, button, image, spacer and caption blocks</td></tr>
+    <tr><td>Testimonials</td><td>Customer quotes with star ratings and linked products</td></tr>
+    <tr><td>Stats</td><td>Numbers that count up (for example "38 workshops")</td></tr>
+    <tr><td>Logo list</td><td>Press or partner logos, static or scrolling</td></tr>
+    <tr><td>Scrolling text</td><td>A marquee of text and small images</td></tr>
+    <tr><td>Collapsible content</td><td>Questions and answers, or any content in rows that open and close</td></tr>
+    <tr><td>Blog posts</td><td>Your latest blog posts</td></tr>
+    <tr><td>Email signup</td><td>A newsletter form (signups appear in <strong>Customers</strong> with the "newsletter" tag)</td></tr>
+    <tr><td>Locations</td><td>Store or showroom addresses with hours, phone and directions</td></tr>
+    <tr><td>Video</td><td>A YouTube, Vimeo or uploaded video</td></tr>
+    <tr><td>Product features, Product comparison</td><td>Feature highlights with icons, and a comparison table between products</td></tr>
+    <tr><td>Recently viewed, Related products</td><td>Products the visitor looked at, and recommendations from Shopify</td></tr>
+    <tr><td>Promo popup, Age verifier</td><td>An email or discount popup (already in the footer area, turned off by default), and an age check you can add if you sell age-restricted products</td></tr>
+    <tr><td>Custom Liquid</td><td>Code snippets from apps or developers</td></tr>
+  </tbody>
+</table></div>
+<p>Apps that support theme app blocks can be added inside many sections and as their own sections.</p>
+
+<h2 id="product">5. Product pages</h2>
+<p>Open a product in the editor (page selector at the top → Products). The <strong>Product information</strong> section is built from blocks you can add, remove and reorder.</p>
+<div class="table"><table>
+  <thead><tr><th>Block</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>Title, Vendor, Price, Breadcrumbs, SKU, Text</td><td>The basics. Price shows sale prices, unit prices and installment messages</td></tr>
+    <tr><td>Product rating</td><td>Shows stars from a reviews app that fills Shopify's product rating</td></tr>
+    <tr><td>Badges</td><td>Sale, sold out, new and custom badges</td></tr>
+    <tr><td>Delivery estimate</td><td>"Arrives between …" with business days and an order-by countdown</td></tr>
+    <tr><td>Inventory status</td><td>Low stock warning with a threshold you set</td></tr>
+    <tr><td>Variant picker</td><td>Buttons or dropdowns. Color options show as swatches using the colors you set on option values in Shopify, or as the variant images. Add a link to a size chart page</td></tr>
+    <tr><td>Purchase options</td><td>Subscriptions from a subscription app</td></tr>
+    <tr><td>Quantity selector, Buy buttons</td><td>Add to cart, dynamic checkout buttons, back-in-stock request, payment icons, pickup availability</td></tr>
+    <tr><td>Specifications</td><td>Dimensions and details with a cm/in switch and a dimensions drawing. Connect each value to a product metafield with the dynamic source button</td></tr>
+    <tr><td>Complete the set</td><td>Pick up to 4 products shoppers can add together with one click</td></tr>
+    <tr><td>Material sample</td><td>Offer a sample: create a free or low-cost sample product and select it</td></tr>
+    <tr><td>Description, Collapsible tab, Highlights</td><td>Product description, extra tabs (care, shipping) and icon highlights</td></tr>
+    <tr><td>Complementary products</td><td>"Pairs well with" products, set in the Search &amp; Discovery app</td></tr>
+    <tr><td>Sale countdown, Trust and payments, Ask a question, Share</td><td>Urgency for limited offers, guarantees, a question form and share links</td></tr>
+  </tbody>
+</table></div>
+<h3>Media and layout</h3>
+<ul>
+  <li><strong>Desktop media layout:</strong> stacked, carousel, thumbnails on the left, or a single image. Shoppers can zoom with a hover magnifier, a full-screen lightbox, or both.</li>
+  <li><strong>Only show images of the selected variant:</strong> assign an image to each variant in Shopify. The images after a variant's image belong to that variant until the next variant image.</li>
+  <li><strong>Sticky add to cart bar</strong> appears when the main button scrolls out of view.</li>
+  <li>Videos, YouTube/Vimeo links and 3D models are supported. 3D models can be viewed in your room on supported phones.</li>
+  <li><strong>Quick add:</strong> turn it on in Theme settings → Product cards. Shoppers choose options and add to cart from any product card.</li>
+</ul>
+
+<h2 id="collection">6. Collection pages and filters</h2>
+<h3>Create your filters (once)</h3>
+<ol>
+  <li>Install the free <strong>Search &amp; Discovery</strong> app by Shopify.</li>
+  <li>Open it, go to <strong>Filters</strong> and click <strong>Add filter</strong>. Good choices: Availability, Price, Product type, Color, Size and Material.</li>
+  <li>Save. Filters now appear on every collection and on search results.</li>
+</ol>
+<p>In the theme editor, a collection without filters shows a short setup guide that only you can see.</p>
+<h3>Collection settings (Product grid section)</h3>
+<ul>
+  <li><strong>Banner:</strong> text only, image beside the text, or text over the image, with breadcrumbs, product count and the collection description above or below the products.</li>
+  <li><strong>Sub-collection links:</strong> pick a menu to show links (with images) to related collections.</li>
+  <li><strong>Grid:</strong> products per page, columns on desktop and mobile, a grid size switch for shoppers, and "Load more", infinite scroll or page numbers.</li>
+  <li><strong>Filter layout:</strong> sidebar, top bar or a drawer. Phones and tablets always use the drawer.</li>
+  <li><strong>Quick filter bar:</strong> type a filter name (for example <code>Product type</code>) to show its values as one-click buttons above the products.</li>
+  <li><strong>Filter style blocks:</strong> add one per filter to show it as a checkbox list, buttons, color swatches or image swatches; open or closed; how many values before "Show more"; or hide it. Drag the blocks to change the filter order.</li>
+  <li><strong>Promotion tile blocks:</strong> place an image or message between products, after the product number you choose.</li>
+</ul>
+
+<h2 id="cart">7. Cart</h2>
+<ul>
+  <li><strong>Cart type:</strong> a drawer beside the page, a small "Added to your cart" popup, or the cart page.</li>
+  <li><strong>Free shipping progress:</strong> set the amount; an optional second goal unlocks a free gift.</li>
+  <li><strong>Discount codes:</strong> shoppers enter codes in the cart and see them applied immediately.</li>
+  <li><strong>Shipping estimator</strong> on the cart page shows rates for a country and postal code.</li>
+  <li><strong>Order note, gift wrap and gift message:</strong> for gift wrap, create a gift wrap product and select it.</li>
+  <li><strong>Terms checkbox:</strong> checkout is enabled only after shoppers agree.</li>
+  <li><strong>Reserved timer:</strong> a calm "your cart is reserved for 10 minutes" message (items are never removed).</li>
+  <li><strong>Undo:</strong> when an item is removed, shoppers can undo it.</li>
+  <li><strong>Empty cart:</strong> choose a collection to suggest products.</li>
+</ul>
+
+<h2 id="search">8. Search</h2>
+<p>Search suggests products, collections, pages and articles as shoppers type. The search results page uses the same filters and sorting as collections. Choose popular searches and suggested products in the Header settings.</p>
+
+<h2 id="blog">9. Blog</h2>
+<ul>
+  <li><strong>Blog layouts:</strong> editorial (a large lead story), grid, or list, with a journal search, tag filters and "Load more".</li>
+  <li><strong>Blog posts</strong> show reading time, a reading progress bar, a table of contents built from your headings, share and copy link buttons, an author box, newer and older posts, and related posts.</li>
+  <li><strong>Author box:</strong> uses the staff member's name, photo and bio (<strong>Settings → Users</strong>).</li>
+  <li><strong>Shop the story:</strong> show products under a post. Create a metafield for blog posts in <strong>Settings → Custom data → Blog posts</strong> with namespace and key <code>custom.products</code> and type <strong>Product (list)</strong>, then pick products on each post. Without it, the products chosen in the section settings are shown.</li>
+  <li>Use headings (Heading 2 and Heading 3) in your posts so the table of contents can be built.</li>
+</ul>
+
+<h2 id="pages">10. Pages and page templates</h2>
+<p>Create a page in <strong>Online Store → Pages</strong>, then choose a template under <strong>Theme template</strong>.</p>
+<div class="table"><table>
+  <thead><tr><th>Template</th><th>Includes</th></tr></thead>
+  <tbody>
+    <tr><td>Default page</td><td>Title and page content</td></tr>
+    <tr><td>page.about</td><td>Story with image, numbers, three values, customer quotes and a newsletter signup</td></tr>
+    <tr><td>page.faq</td><td>Three groups of questions and a contact form</td></tr>
+    <tr><td>page.contact</td><td>Contact form with topic buttons, order number field, contact details, opening hours, address with directions and quick answers</td></tr>
+    <tr><td>page.showrooms</td><td>Your store locations</td></tr>
+  </tbody>
+</table></div>
+<p>Contact form messages are sent to your store's contact email, set in your store settings. The selected topic and order number are included in the message.</p>
+
+<h2 id="footer">11. Footer</h2>
+<ul>
+  <li><strong>Promises:</strong> up to 4 short promises with icons (delivery, returns, guarantee, help) across the top.</li>
+  <li><strong>Email signup</strong> as a full-width banner or a column.</li>
+  <li><strong>Blocks:</strong> brand text and social icons, menus, contact details, text, image with caption, and app blocks. The columns adjust to the blocks you add.</li>
+  <li>On phones, menus fold into tap-to-open sections.</li>
+  <li><strong>Large wordmark:</strong> your store name across the full width (solid, outline or subtle).</li>
+  <li><strong>Curtain reveal:</strong> on desktop, the page slides up to reveal the footer.</li>
+  <li>Country and language selectors, payment icons, policy links, copyright text and a back to top link.</li>
+</ul>
+
+<h2 id="seo">12. SEO</h2>
+<p>Placard takes care of the technical side: one main heading per page, page titles with page numbers, canonical links, social sharing previews, structured data for your store, products, breadcrumbs and blog posts, crawlable pagination, fast loading and image alt text that falls back to the product name.</p>
+<p>What you should do:</p>
+<ol>
+  <li>Set your store title, description and social sharing image in <strong>Online Store → Preferences</strong>.</li>
+  <li>Fill in <strong>Search engine listing</strong> (title under 60 characters, description under 160) for products, collections, pages and posts.</li>
+  <li>Add alt text to images: describe what is in the photo.</li>
+  <li>Write 2 to 3 sentences for each collection description.</li>
+</ol>
+
+<h2 id="languages">13. Languages and currencies</h2>
+<p>Placard's storefront text is translated into English, French, German, Spanish, Italian and Dutch. Add languages in <strong>Settings → Languages</strong> and markets in <strong>Settings → Markets</strong>; the selectors appear automatically. To change any wording, use <strong>Online Store → Themes → … → Edit default theme content</strong>.</p>
+
+<h2 id="faq">14. Questions and troubleshooting</h2>
+<h3>My filters don't show</h3>
+<p>Create filters in the Search &amp; Discovery app and check that "Enable filtering" is on in the collection's Product grid section. Filters only show values that products in the collection have.</p>
+<h3>The account icon doesn't open sign-in</h3>
+<p>Turn on customer accounts in <strong>Settings → Customer accounts</strong>, and check "Show account sign-in" in the Header.</p>
+<h3>Color swatches are grey</h3>
+<p>Set a color or image on each option value in Shopify (product variants or the Search &amp; Discovery app), or use standard color names such as "Black" or "Sage".</p>
+<h3>Reviews don't appear</h3>
+<p>Install a reviews app that supports Shopify's product rating, then add the Product rating block. Many review apps also offer their own app block.</p>
+<h3>The transparent header isn't transparent</h3>
+<p>It only applies on the home page, and looks best when the first section is a Slideshow or Hero with an image. Check "Transparent on home page" in the Header settings.</p>
+<h3>Animations feel too busy</h3>
+<p>Turn off "Reveal sections on scroll" in Theme settings → Shapes and motion. Visitors who prefer reduced motion on their device never see animations.</p>
+<h3>How do I update Placard?</h3>
+<p>When a new version is released, the Themes page shows an update notice. Updating creates a copy with your settings carried over; preview it, then publish.</p>
+
+<h2 id="support">15. Support</h2>
+<p>Email <a href="mailto:yazeedmhajarat@gmail.com">yazeedmhajarat@gmail.com</a>. Please include your store address, the page and section you are working on, and a screenshot. We usually reply within one to two business days.</p>
+<p>Support covers theme setup, settings and bugs. Custom code changes and third-party apps are not included.</p>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <span>Placard v0.16.2, a Shopify theme by Yazeed Hajarat</span>
+      <a href="mailto:yazeedmhajarat@gmail.com">yazeedmhajarat@gmail.com</a>
+    </div>
+  </footer>
+
+  <script>
+    // Highlight the section in view; collapse the contents list on small screens after a click.
+    const links = [...document.querySelectorAll('.nav a')];
+    const byId = new Map(links.map((a) => [a.hash.slice(1), a]));
+    const details = document.querySelector('.nav details');
+    const wide = matchMedia('(min-width: 960px)');
+    const sync = () => { details.open = wide.matches || details.dataset.userOpen === 'true'; };
+    if (!wide.matches) details.open = false;
+    wide.addEventListener('change', sync);
+    details.querySelector('summary').addEventListener('click', () => { details.dataset.userOpen = String(!details.open); });
+    links.forEach((a) => a.addEventListener('click', () => { if (!wide.matches) { details.open = false; details.dataset.userOpen = 'false'; } }));
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        links.forEach((a) => a.removeAttribute('aria-current'));
+        byId.get(entry.target.id)?.setAttribute('aria-current', 'true');
+      });
+    }, { rootMargin: '-80px 0px -60% 0px' });
+    document.querySelectorAll('main h2[id]').forEach((h) => observer.observe(h));
+  </script>
+</body>
+</html>
